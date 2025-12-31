@@ -13,7 +13,7 @@ export default function Home() {
   const generate = async () => {
     setError("");
     setShortUrl("");
-
+    console.log(process.env.NEXT_PUBLIC_API_BASE + "/api/url")
     try {
       const res = await axios.post(
         process.env.NEXT_PUBLIC_API_BASE + "/api/url",
