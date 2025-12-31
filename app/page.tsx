@@ -10,25 +10,34 @@ export default function Home() {
   const [shortUrl, setShortUrl] = useState("");
   const [error, setError] = useState("");
 
-  const generate = async () => {
-    setError("");
-    setShortUrl("");
-    console.log(process.env.NEXT_PUBLIC_API_BASE + "/api/url")
-    try {
-      const res = await axios.post(
-        process.env.NEXT_PUBLIC_API_BASE + "/api/url",
-        {
-          url,
-          shortCode: code || undefined,
-          ttl: ttl ? Number(ttl) : undefined,
-        }
-      );
+const generate = async () => {
+  setError("");
+  setShortUrl("");
 
-      setShortUrl(res.data.shortUrl);
-    } catch (e: any) {
-      setError(e.response?.data?.message || "Failed to generate URL");
-    }
-  };
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+  console.log("API_BASE:", API_BASE);
+
+  try {
+    const res = await axios.post(
+      `${API_BASE}/api/url`,
+      {
+        url,
+        shortCode: code || undefined,
+        ttl: ttl ? Number(ttl) : undefined,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    setShortUrl(res.data.shortUrl);
+  } catch (e: any) {
+    setError(e.response?.data?.message || "Failed to generate URL");
+  }
+};
+
 
   return (
     <main className="min-h-screen bg-gray-100 flex items-center justify-center">

@@ -3,8 +3,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ARG NEXT_PUBLIC_API_BASE
-ENV NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -21,5 +21,4 @@ ENV NODE_ENV=production
 COPY --from=builder /app ./
 
 EXPOSE 3000
-
 CMD ["npm", "run", "start"]
