@@ -1,8 +1,10 @@
 "use client";
 
+import { GoogleLogin } from "@react-oauth/google";
 import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,11 +12,30 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+
+ const handleGoogleLogin = async (credentialResponse: any) => {
+    try {
+      const idToken = credentialResponse.credential;
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/google`,
+        { idToken }
+      );
+
+      localStorage.setItem("token", res.data.access_token);
+
+      router.push("/");
+    } catch (err) {
+      console.error("Google login failed", err);
+    }
+  };
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       router.replace("/");
     }
   }, [router]);
+  
 
   const login = async () => {
     setError("");
@@ -32,9 +53,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="w-96 space-y-4">
-        <h1 className="text-xl font-bold">Login</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <div className="w-96 space-y-4 rounded border p-6 shadow-lg">
+        <h1 className="text-xl font-bold text-center">Login</h1>
 
         <input
           className="w-full border p-2"
@@ -53,7 +74,7 @@ export default function LoginPage() {
 
         <button
           onClick={login}
-          className="w-full bg-black text-white p-2"
+          className="w-full bg-black text-white p-2 active:scale-95 transition-transform rounded hover:opacity-90"
         >
           Login
         </button>
@@ -62,6 +83,13 @@ export default function LoginPage() {
           No account? <a href="/register" className="underline">Sign up</a>
         </p>
       </div>
+      <div style={{ marginTop: "20px" }}>
+        <GoogleLogin
+          onSuccess={handleGoogleLogin}
+          onError={() => console.log("Google login failed")}
+        />
+      </div>
     </div>
+    
   );
 }
