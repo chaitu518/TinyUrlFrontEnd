@@ -122,51 +122,68 @@ export default function UrlTable({
 
   /* ================= UI ================= */
 
-  if (loading) return <p>Loading...</p>;
+/* ================= UI ================= */
 
-
+if (loading) {
   return (
     <div className="bg-white border rounded p-4">
-      <div className="flex flex-wrap gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Search by original URL / shortcode"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className="
-            flex-1 min-w-[240px]
-            px-3 py-2 text-sm
-            border rounded-md
-            focus:outline-none focus:ring-2 focus:ring-blue-500
-          "
-        />
+      <p>Loading...</p>
+    </div>
+  );
+}
 
+return (
+  <div className="bg-white border rounded p-4">
+    {/* 🔍 SEARCH BAR — ALWAYS VISIBLE */}
+    <div className="flex flex-wrap gap-2 mb-4">
+      <input
+        type="text"
+        placeholder="Search by original URL / shortcode"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        className="
+          flex-1 min-w-[240px]
+          px-3 py-2 text-sm
+          border rounded-md
+          focus:outline-none focus:ring-2 focus:ring-blue-500
+        "
+      />
+
+      <button
+        onClick={handleSearch}
+        className="
+          px-4 py-2 text-sm font-medium
+          bg-blue-600 text-white rounded-md
+          hover:bg-blue-700 active:scale-95
+        "
+      >
+        Search
+      </button>
+
+      {searchQuery && (
         <button
-          onClick={handleSearch}
+          onClick={handleClearSearch}
           className="
             px-4 py-2 text-sm font-medium
-            bg-blue-600 text-white rounded-md
-            hover:bg-blue-700 active:scale-95
+            bg-gray-200 text-gray-700 rounded-md
+            hover:bg-gray-300 active:scale-95
           "
         >
-          Search
+          Clear
         </button>
+      )}
+    </div>
 
-        {searchQuery && (
-          <button
-            onClick={handleClearSearch}
-            className="
-              px-4 py-2 text-sm font-medium
-              bg-gray-200 text-gray-700 rounded-md
-              hover:bg-gray-300 active:scale-95
-            "
-          >
-            Clear
-          </button>
-        )}
-      </div>
-      {(data !==null && data.content.length !== 0) && <table className="w-full text-sm">
+    {/* 📭 EMPTY STATE */}
+    {!data || data.content.length === 0 ? (
+      <p className="text-sm text-gray-500 text-center">
+        No URLs found
+      </p>
+    ) : (
+      <>
+        {/* 📊 TABLE */}
+        <table className="w-full text-sm">
         <thead>
           <tr className="border-b text-center">
             <th>Original</th>
@@ -238,53 +255,37 @@ export default function UrlTable({
             );
           })}
         </tbody>
-      </table>}
+        </table>
 
-      {/* Pagination */}
-      <div className="flex justify-end items-center gap-3 mt-6">
-        {/* PREV */}
-        <button
-          disabled={data.first}
-          onClick={() => setPage((p) => p - 1)}
-          className={`
-            px-3 py-1.5 rounded-md
-            text-sm font-medium
-            transition-all duration-200
-            ${
-              data.first
-                ? "text-gray-400 bg-gray-100 cursor-not-allowed"
-                : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 active:scale-95"
-            }
-          `}
-        >
-          ← Prev
-        </button>
+        {/* 📄 PAGINATION */}
+        <div className="flex justify-end items-center gap-3 mt-6">
+          <button
+            disabled={data.first}
+            onClick={() => setPage((p) => p - 1)}
+            className={data.first
+              ? "text-gray-400 bg-gray-100 px-3 py-1.5 rounded-md"
+              : "text-gray-700 bg-white border px-3 py-1.5 rounded-md hover:bg-gray-100"}
+          >
+            ← Prev
+          </button>
 
-      {/* PAGE INFO */}
-        <span className="px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-md">
-          Page <span className="text-gray-900">{data.number + 1}</span> of{" "}
-          <span className="text-gray-900">{data.totalPages}</span>
-        </span>
+          <span className="px-3 py-1.5 text-sm">
+            Page {data.number + 1} of {data.totalPages}
+          </span>
 
-        {/* NEXT */}
-        <button
-          disabled={data.last}
-          onClick={() => setPage((p) => p + 1)}
-          className={`
-            px-3 py-1.5 rounded-md
-            text-sm font-medium
-            transition-all duration-200
-            ${
-              data.last
-                ? "text-gray-400 bg-gray-100 cursor-not-allowed"
-                : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 active:scale-95"
-            }
-          `}
-        >
-          Next →
-        </button>
-      </div>
+          <button
+            disabled={data.last}
+            onClick={() => setPage((p) => p + 1)}
+            className={data.last
+              ? "text-gray-400 bg-gray-100 px-3 py-1.5 rounded-md"
+              : "text-gray-700 bg-white border px-3 py-1.5 rounded-md hover:bg-gray-100"}
+          >
+            Next →
+          </button>
+        </div>
+      </>
+    )}
+  </div>
+);
 
-    </div>
-  );
 }
