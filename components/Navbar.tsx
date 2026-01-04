@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
-export default function Navbar({
-  onMenuClick,
-}: {
-  onMenuClick: () => void;
-}) {
+type NavbarProps = {
+  onMenuClick?: () => void;
+};
+
+export default function Navbar({ onMenuClick }: NavbarProps) {
   const router = useRouter();
 
   const logout = () => {
@@ -15,12 +15,11 @@ export default function Navbar({
   };
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 border-b bg-white">
-      <div className="flex items-center gap-3">
-        {/* Hamburger */}
+    <header className="flex items-center justify-between px-6 py-4 border-b bg-white">
+      <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="text-2xl md:hidden"
+          className="lg:hidden text-xl font-bold"
         >
           ☰
         </button>

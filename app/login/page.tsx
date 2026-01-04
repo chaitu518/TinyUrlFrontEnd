@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [router]);
   

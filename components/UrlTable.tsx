@@ -58,6 +58,16 @@ export default function UrlTable({
 
   /* ================= FETCH ================= */
 
+  const handleShortClick = (url: string) => {
+  window.open(url, "_blank");
+
+  // refresh data after a small delay
+  setTimeout(() => {
+    fetchUrls();
+  }, 500);
+};
+
+
   const fetchUrls = useCallback(async () => {
     setLoading(true);
     try {
@@ -85,6 +95,22 @@ export default function UrlTable({
   }, [fetchUrls, refreshKey]);
 
   /* ================= ACTIONS ================= */
+  const handleSearch = () => {
+    setPage(0);
+    setSearchQuery(searchInput.trim());
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput("");
+    setSearchQuery("");
+    setPage(0);
+  };
+
+  const handleCopy = async (shortUrl: string) => {
+    await navigator.clipboard.writeText(shortUrl);
+    alert("Short URL copied!");
+  };
+
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this URL?")) return;
@@ -92,17 +118,55 @@ export default function UrlTable({
     fetchUrls();
   };
 
+
+
   /* ================= UI ================= */
 
   if (loading) return <p>Loading...</p>;
 
-  if (!data || data.content.length === 0) {
-    return <p className="text-sm text-gray-500">No URLs found</p>;
-  }
 
   return (
     <div className="bg-white border rounded p-4">
-      <table className="w-full text-sm">
+      <div className="flex flex-wrap gap-2 mb-4">
+        <input
+          type="text"
+          placeholder="Search by original URL / shortcode"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          className="
+            flex-1 min-w-[240px]
+            px-3 py-2 text-sm
+            border rounded-md
+            focus:outline-none focus:ring-2 focus:ring-blue-500
+          "
+        />
+
+        <button
+          onClick={handleSearch}
+          className="
+            px-4 py-2 text-sm font-medium
+            bg-blue-600 text-white rounded-md
+            hover:bg-blue-700 active:scale-95
+          "
+        >
+          Search
+        </button>
+
+        {searchQuery && (
+          <button
+            onClick={handleClearSearch}
+            className="
+              px-4 py-2 text-sm font-medium
+              bg-gray-200 text-gray-700 rounded-md
+              hover:bg-gray-300 active:scale-95
+            "
+          >
+            Clear
+          </button>
+        )}
+      </div>
+      {(data !==null && data.content.length !== 0) && <table className="w-full text-sm">
         <thead>
           <tr className="border-b text-center">
             <th>Original</th>
@@ -126,7 +190,7 @@ export default function UrlTable({
                 <td>
                  <button
                   disabled={expired}
-                  onClick={() => window.open(u.shortUrl, "_blank")}
+                  onClick={() => handleShortClick(u.shortUrl)}
                   className={`
                     relative inline-flex items-center gap-1
                     px-3 py-1.5 rounded-md
@@ -174,7 +238,7 @@ export default function UrlTable({
             );
           })}
         </tbody>
-      </table>
+      </table>}
 
       {/* Pagination */}
       <div className="flex justify-end items-center gap-3 mt-6">

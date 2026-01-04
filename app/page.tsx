@@ -1,10 +1,5 @@
-import AuthGuard from "@/components/AuthGuard";
-import UrlShortener from "./url-shortener";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  return (
-    <AuthGuard>
-      <UrlShortener />
-    </AuthGuard>
-  );
+export default function Home() {
+  redirect("/login");
 }

@@ -13,13 +13,10 @@ export default function DashboardLayout({
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) router.push("/login");
-  }, [router]);
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* ✅ FIX: pass required prop */}
       <Navbar onMenuClick={() => setSidebarOpen(true)} />
 
       <div className="flex flex-1 relative">
