@@ -23,9 +23,8 @@ export default function LoginPage() {
       );
 
       localStorage.setItem("token", res.data.access_token);
-      localStorage.setItem("userId", res.data.userId);
 
-      router.push("/");
+      router.push("/dashboard");
     } catch (err) {
       console.error("Google login failed", err);
     }
@@ -47,8 +46,7 @@ export default function LoginPage() {
       });
 
       localStorage.setItem("token", res.data.access_token);
-      localStorage.setItem("userId", res.data.userId);
-      router.push("/");
+      router.push("/dashboard");
     } catch {
       setError("Invalid credentials");
     }
