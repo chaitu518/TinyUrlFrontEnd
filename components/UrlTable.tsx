@@ -120,8 +120,6 @@ export default function UrlTable({
 
 
 
-  /* ================= UI ================= */
-
 /* ================= UI ================= */
 
 if (loading) {
@@ -183,7 +181,8 @@ return (
     ) : (
       <>
         {/* 📊 TABLE */}
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <table className="min-w-[720px] w-full text-sm">
         <thead>
           <tr className="border-b text-center">
             <th>Original</th>
@@ -205,32 +204,44 @@ return (
                 </td>
 
                 <td>
-                 <button
-                  disabled={expired}
-                  onClick={() => handleShortClick(u.shortUrl)}
-                  className={`
-                    relative inline-flex items-center gap-1
-                    px-3 py-1.5 rounded-md
-                    text-sm font-medium
-                    transition-all duration-200 ease-in-out
-                    ${
-                      expired
-                        ? "text-gray-400 cursor-not-allowed"
-                        : `
-                          text-blue-600
-                          border border-blue-200
-                          bg-blue-50
-                          hover:bg-blue-100
-                          hover:border-blue-300
-                          hover:text-blue-700
-                          active:scale-95
-                        `
-                    }
-                  `}
-                >
-                  Click here
-                </button>
+                  <div className="flex justify-center items-center gap-2 flex-wrap">
+                    {/* OPEN SHORT URL */}
+                    <button
+                      disabled={expired}
+                      onClick={() => handleShortClick(u.shortUrl)}
+                      className={`
+                        inline-flex items-center
+                        px-3 py-1.5 rounded-md
+                        text-sm font-medium
+                        transition
+                        ${
+                          expired
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100"
+                        }
+                      `}
+                    >
+                      Open
+                    </button>
+
+                    {/* COPY BUTTON */}
+                    <button
+                      onClick={() => handleCopy(u.shortUrl)}
+                      className="
+                        inline-flex items-center
+                        px-2 py-1.5 rounded-md
+                        text-xs font-medium
+                        border border-gray-300
+                        bg-white text-gray-700
+                        hover:bg-gray-100
+                        active:scale-95
+                      "
+                    >
+                      Copy
+                    </button>
+                  </div>
                 </td>
+
 
                 <td>{u.accessCount}</td>
 
@@ -256,6 +267,7 @@ return (
           })}
         </tbody>
         </table>
+        </div>
 
         {/* 📄 PAGINATION */}
         <div className="flex justify-end items-center gap-3 mt-6">
