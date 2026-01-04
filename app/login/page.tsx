@@ -23,6 +23,7 @@ export default function LoginPage() {
       );
 
       localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("userId", res.data.userId);
 
       router.push("/");
     } catch (err) {
@@ -46,6 +47,7 @@ export default function LoginPage() {
       });
 
       localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("userId", res.data.userId);
       router.push("/");
     } catch {
       setError("Invalid credentials");

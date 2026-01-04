@@ -32,8 +32,8 @@ export default function UrlShortener() {
       if (ttl.trim()) {
         payload.ttl = Number(ttl);
       }
-
-      const res = await authApi.post("/api/url", payload);
+      const userId = localStorage.getItem("userId");
+      const res = await authApi.post(`/api/${userId}/url`, payload);
 
       setShortUrl(res.data.shortUrl);
     } catch (e: any) {
