@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
@@ -10,24 +9,47 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* ✅ FIX: pass required prop */}
-      <Navbar onMenuClick={() => setSidebarOpen(true)} />
+    <div className="min-h-screen bg-gray-50">
 
-      <div className="flex flex-1 relative">
-        <Sidebar
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        />
+      {/* 🔝 FIXED NAVBAR */}
+      <header className="fixed top-0 left-0 right-0 h-16 z-50">
+        <Navbar onMenuClick={() => setSidebarOpen(true)} />
+      </header>
 
-        <main className="flex-1 p-6 bg-gray-50">
+      {/* 🧱 LAYOUT BELOW NAVBAR */}
+      <div className="flex pt-16">
+
+        {/* 📌 FIXED SIDEBAR */}
+        <aside className="hidden lg:block fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 z-40">
+          <Sidebar open onClose={() => {}} />
+        </aside>
+
+        {/* 📱 MOBILE SIDEBAR */}
+        {sidebarOpen && (
+          <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
+            <Sidebar
+              open={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+            />
+          </div>
+        )}
+
+        {/* 📄 SCROLLABLE CONTENT */}
+        <main
+          className="
+            flex-1
+            ml-0 lg:ml-64
+            p-6
+            h-[calc(100vh-4rem)]
+            overflow-y-auto
+          "
+        >
           {children}
         </main>
+
       </div>
     </div>
   );

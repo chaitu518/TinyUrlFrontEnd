@@ -180,94 +180,82 @@ return (
       </p>
     ) : (
       <>
-        {/* 📊 TABLE */}
-        <div className="overflow-x-auto -mx-4 sm:mx-0">
-        <table className="min-w-[720px] w-full text-sm">
-        <thead>
-          <tr className="border-b text-center">
-            <th>Original</th>
-            <th>Short</th>
-            <th>Count</th>
-            <th>Expiry</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
+        {/* 📦 CARD LIST */}
+        <div className="space-y-4">
           {data.content.map((u) => {
             const expired = isExpired(u.expiresAt);
 
             return (
-              <tr key={u.id} className="border-b text-center">
-                <td className="truncate max-w-xs mx-auto">
+              <div
+                key={u.id}
+                className="relative border rounded-lg p-4 bg-white shadow-sm hover:shadow transition"
+              >
+                {/* ❌ DELETE */}
+                <button
+                  onClick={() => handleDelete(u.id)}
+                  className="absolute top-3 right-3 text-red-600 text-sm hover:underline"
+                >
+                  Delete
+                </button>
+
+                {/* 🔗 TITLE */}
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                  {u.shortCode}
+                </h3>
+
+                {/* 🌐 ORIGINAL URL */}
+                <p className="text-xs text-gray-500 truncate mb-2">
                   {u.originalUrl}
-                </td>
+                </p>
 
-                <td>
-                  <div className="flex justify-center items-center gap-2 flex-wrap">
-                    {/* OPEN SHORT URL */}
-                    <button
-                      disabled={expired}
-                      onClick={() => handleShortClick(u.shortUrl)}
-                      className={`
-                        inline-flex items-center
-                        px-3 py-1.5 rounded-md
-                        text-sm font-medium
-                        transition
-                        ${
-                          expired
-                            ? "text-gray-400 cursor-not-allowed"
-                            : "text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100"
-                        }
-                      `}
-                    >
-                      Open
-                    </button>
-
-                    {/* COPY BUTTON */}
-                    <button
-                      onClick={() => handleCopy(u.shortUrl)}
-                      className="
-                        inline-flex items-center
-                        px-2 py-1.5 rounded-md
-                        text-xs font-medium
-                        border border-gray-300
-                        bg-white text-gray-700
-                        hover:bg-gray-100
-                        active:scale-95
-                      "
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </td>
-
-
-                <td>{u.accessCount}</td>
-
-                <td>
-                  {formatExpiry(u.expiresAt)}
-                  {expired && (
-                    <div className="text-xs text-red-600">
-                      Expired
-                    </div>
-                  )}
-                </td>
-
-                <td>
+                {/* 🔗 SHORT URL + ACTIONS */}
+                <div className="flex flex-wrap items-center gap-3">
                   <button
-                    onClick={() => handleDelete(u.id)}
-                    className="text-red-600 text-sm"
+                    disabled={expired}
+                    onClick={() => handleShortClick(u.shortUrl)}
+                    className={`
+                      text-sm font-medium
+                      ${
+                        expired
+                          ? "text-gray-400 cursor-not-allowed"
+                          : "text-blue-600 hover:underline"
+                      }
+                    `}
                   >
-                    Delete
+                    {u.shortUrl}
                   </button>
-                </td>
-              </tr>
+
+                  <button
+                    onClick={() => handleCopy(u.shortUrl)}
+                    className="
+                      text-xs px-2 py-1
+                      border rounded
+                      bg-gray-50 hover:bg-gray-100
+                    "
+                  >
+                    Copy
+                  </button>
+                </div>
+
+                {/* 📊 META */}
+                <div className="flex flex-wrap gap-6 mt-3 text-xs text-gray-600">
+                  <span>
+                    <strong>Clicks:</strong> {u.accessCount}
+                  </span>
+
+                  <span>
+                    <strong>Expiry:</strong>{" "}
+                    {formatExpiry(u.expiresAt)}
+                    {expired && (
+                      <span className="ml-1 text-red-600">(Expired)</span>
+                    )}
+                  </span>
+                </div>
+              </div>
             );
           })}
-        </tbody>
-        </table>
         </div>
+
 
         {/* 📄 PAGINATION */}
         <div className="flex justify-end items-center gap-3 mt-6">

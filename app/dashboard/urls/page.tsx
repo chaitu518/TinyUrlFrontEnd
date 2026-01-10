@@ -8,6 +8,7 @@ import UrlMetrics from "@/components/UrlMetrics";
 export default function UrlsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [urls, setUrls] = useState<any[]>([]);
+  const [open, setOpen] = useState(false);
 
   const triggerRefresh = () => {
     setRefreshKey((prev) => prev + 1);
@@ -15,28 +16,52 @@ export default function UrlsPage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">My URLs</h2>
 
-      {/* Metrics */}
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">My URLs</h2>
+
+        <button
+          onClick={() => setOpen(true)}
+          className="
+            px-4 py-2
+            bg-blue-600 text-white
+            rounded-md
+            hover:bg-blue-700
+            active:scale-95
+            transition
+          "
+        >
+          Create Link
+        </button>
+      </div>
+
+      {/* METRICS */}
       <UrlMetrics urls={urls} />
 
-      {/* MAIN LAYOUT */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* LEFT: URL TABLE */}
-        <div className="lg:col-span-2">
-          <UrlTable
-            refreshKey={refreshKey}
-            onDataLoaded={setUrls}
-          />
-        </div>
-
-        {/* RIGHT: CREATE FORM */}
-        <div className="lg:col-span-1">
-          <UrlForm onSuccess={triggerRefresh} />
-        </div>
-
+      {/* TABLE */}
+      <div className="rounded-lg border p-4 bg-white shadow">
+        <UrlTable refreshKey={refreshKey} onDataLoaded={setUrls} />
       </div>
+
+      {/* MODAL */}
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            <h3 className="text-lg font-semibold mb-4">
+              Create Short URL
+            </h3>
+
+            <UrlForm
+              onCancel={() => setOpen(false)}
+              onSuccess={() => {
+                setOpen(false);
+                triggerRefresh();
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
