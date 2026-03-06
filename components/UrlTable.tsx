@@ -124,14 +124,14 @@ export default function UrlTable({
 
 if (loading) {
   return (
-    <div className="bg-white border rounded p-4">
-      <p>Loading...</p>
+    <div className="p-4">
+      <p className="text-[#8b8da0]">Loading...</p>
     </div>
   );
 }
 
 return (
-  <div className="bg-white border rounded p-4">
+  <div className="p-4">
     {/* 🔍 SEARCH BAR — ALWAYS VISIBLE */}
     <div className="flex flex-wrap gap-2 mb-4">
       <input
@@ -143,17 +143,19 @@ return (
         className="
           flex-1 min-w-[240px]
           px-3 py-2 text-sm
-          border rounded-md
-          focus:outline-none focus:ring-2 focus:ring-blue-500
+          border border-[#2e3044] bg-[#1a1b24] text-[#d1d3de] placeholder-[#5d5f73]
+          rounded-md
+          focus:outline-none focus:ring-2 focus:ring-[#7c8ade]/40
         "
       />
 
       <button
         onClick={handleSearch}
         className="
-          px-4 py-2 text-sm font-medium
-          bg-blue-600 text-white rounded-md
-          hover:bg-blue-700 active:scale-95
+          px-4 py-2 text-sm font-semibold
+          bg-[#5c6bc0] text-[#eaebf2] rounded-md
+          hover:bg-[#6a79ce] active:scale-95
+          transition
         "
       >
         Search
@@ -164,8 +166,9 @@ return (
           onClick={handleClearSearch}
           className="
             px-4 py-2 text-sm font-medium
-            bg-gray-200 text-gray-700 rounded-md
-            hover:bg-gray-300 active:scale-95
+            bg-[#272833] text-[#8b8da0] rounded-md
+            hover:bg-[#2f303d] active:scale-95
+            transition-colors
           "
         >
           Clear
@@ -175,7 +178,7 @@ return (
 
     {/* 📭 EMPTY STATE */}
     {!data || data.content.length === 0 ? (
-      <p className="text-sm text-gray-500 text-center">
+      <p className="text-sm text-[#5d5f73] text-center">
         No URLs found
       </p>
     ) : (
@@ -188,23 +191,23 @@ return (
             return (
               <div
                 key={u.id}
-                className="relative border rounded-lg p-4 bg-white shadow-sm hover:shadow transition"
+                className="relative border border-[#2e3044] rounded-lg p-4 bg-[#1a1b24] hover:bg-[#222330] transition-colors"
               >
                 {/* ❌ DELETE */}
                 <button
                   onClick={() => handleDelete(u.id)}
-                  className="absolute top-3 right-3 text-red-600 text-sm hover:underline"
+                  className="absolute top-3 right-3 text-[#cf7c82] text-sm hover:text-[#e09096] hover:underline transition-colors"
                 >
                   Delete
                 </button>
 
                 {/* 🔗 TITLE */}
-                <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                <h3 className="text-sm font-semibold text-[#d1d3de] mb-1">
                   {u.shortCode}
                 </h3>
 
                 {/* 🌐 ORIGINAL URL */}
-                <p className="text-xs text-gray-500 truncate mb-2">
+                <p className="text-xs text-[#6c6c82] truncate mb-2">
                   {u.originalUrl}
                 </p>
 
@@ -217,8 +220,8 @@ return (
                       text-sm font-medium
                       ${
                         expired
-                          ? "text-gray-400 cursor-not-allowed"
-                          : "text-blue-600 hover:underline"
+                          ? "text-[#5d5f73] cursor-not-allowed"
+                          : "text-[#8b9cf0] hover:text-[#a0adf0] hover:underline"
                       }
                     `}
                   >
@@ -229,8 +232,10 @@ return (
                     onClick={() => handleCopy(u.shortUrl)}
                     className="
                       text-xs px-2 py-1
-                      border rounded
-                      bg-gray-50 hover:bg-gray-100
+                      border border-[#2e3044] rounded
+                      text-[#8b8da0]
+                      bg-[#222330] hover:bg-[#272833]
+                      transition-colors
                     "
                   >
                     Copy
@@ -238,16 +243,16 @@ return (
                 </div>
 
                 {/* 📊 META */}
-                <div className="flex flex-wrap gap-6 mt-3 text-xs text-gray-600">
+                <div className="flex flex-wrap gap-6 mt-3 text-xs text-[#6c6c82]">
                   <span>
-                    <strong>Clicks:</strong> {u.accessCount}
+                    <strong className="text-[#8b8da0]">Clicks:</strong> {u.accessCount}
                   </span>
 
                   <span>
-                    <strong>Expiry:</strong>{" "}
+                    <strong className="text-[#8b8da0]">Expiry:</strong>{" "}
                     {formatExpiry(u.expiresAt)}
                     {expired && (
-                      <span className="ml-1 text-red-600">(Expired)</span>
+                      <span className="ml-1 text-[#cf7c82]">(Expired)</span>
                     )}
                   </span>
                 </div>
@@ -263,13 +268,13 @@ return (
             disabled={data.first}
             onClick={() => setPage((p) => p - 1)}
             className={data.first
-              ? "text-gray-400 bg-gray-100 px-3 py-1.5 rounded-md"
-              : "text-gray-700 bg-white border px-3 py-1.5 rounded-md hover:bg-gray-100"}
+              ? "text-[#5d5f73] bg-[#1a1b24] px-3 py-1.5 rounded-md cursor-not-allowed"
+              : "text-[#8b8da0] bg-[#1a1b24] border border-[#2e3044] px-3 py-1.5 rounded-md hover:bg-[#272833] transition-colors"}
           >
             ← Prev
           </button>
 
-          <span className="px-3 py-1.5 text-sm">
+          <span className="px-3 py-1.5 text-sm text-[#6c6c82]">
             Page {data.number + 1} of {data.totalPages}
           </span>
 
@@ -277,8 +282,8 @@ return (
             disabled={data.last}
             onClick={() => setPage((p) => p + 1)}
             className={data.last
-              ? "text-gray-400 bg-gray-100 px-3 py-1.5 rounded-md"
-              : "text-gray-700 bg-white border px-3 py-1.5 rounded-md hover:bg-gray-100"}
+              ? "text-[#5d5f73] bg-[#1a1b24] px-3 py-1.5 rounded-md cursor-not-allowed"
+              : "text-[#8b8da0] bg-[#1a1b24] border border-[#2e3044] px-3 py-1.5 rounded-md hover:bg-[#272833] transition-colors"}
           >
             Next →
           </button>

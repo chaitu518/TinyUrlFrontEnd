@@ -12,7 +12,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#16171d] text-[#d1d3de]">
 
       {/* 🔝 FIXED NAVBAR */}
       <header className="fixed top-0 left-0 right-0 h-16 z-50">
@@ -29,7 +29,7 @@ export default function DashboardLayout({
 
         {/* 📱 MOBILE SIDEBAR */}
         {sidebarOpen && (
-          <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
+          <div className="fixed inset-0 z-50 bg-black/50 lg:hidden">
             <Sidebar
               open={sidebarOpen}
               onClose={() => setSidebarOpen(false)}

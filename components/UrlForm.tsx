@@ -50,11 +50,11 @@ export default function UrlForm({ onSuccess, onCancel }: Props) {
       
       {/* LONG URL */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium mb-1 text-[#8b8da0]">
           Long URL
         </label>
         <input
-          className="w-full border px-3 py-2 text-sm rounded-md"
+          className="w-full border border-[#2e3044] bg-[#1a1b24] text-[#d1d3de] placeholder-[#5d5f73] px-3 py-2 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-[#7c8ade]/40"
           placeholder="https://example.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
@@ -64,11 +64,11 @@ export default function UrlForm({ onSuccess, onCancel }: Props) {
       {/* OPTIONAL FIELDS */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 text-[#8b8da0]">
             Custom Code
           </label>
           <input
-            className="w-full border px-3 py-2 text-sm rounded-md"
+            className="w-full border border-[#2e3044] bg-[#1a1b24] text-[#d1d3de] placeholder-[#5d5f73] px-3 py-2 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-[#7c8ade]/40"
             placeholder="optional"
             value={shortCode}
             onChange={(e) => setShortCode(e.target.value)}
@@ -76,12 +76,12 @@ export default function UrlForm({ onSuccess, onCancel }: Props) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 text-[#8b8da0]">
             TTL (seconds)
           </label>
           <input
             type="number"
-            className="w-full border px-3 py-2 text-sm rounded-md"
+            className="w-full border border-[#2e3044] bg-[#1a1b24] text-[#d1d3de] placeholder-[#5d5f73] px-3 py-2 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-[#7c8ade]/40"
             placeholder="optional"
             value={ttl}
             onChange={(e) => setTtl(e.target.value)}
@@ -90,7 +90,7 @@ export default function UrlForm({ onSuccess, onCancel }: Props) {
       </div>
 
       {error && (
-        <p className="text-red-500 text-xs">
+        <p className="text-[#cf7c82] text-xs">
           {error}
         </p>
       )}
@@ -100,7 +100,7 @@ export default function UrlForm({ onSuccess, onCancel }: Props) {
         {onCancel && (
           <button
             onClick={onCancel}
-            className="px-4 py-2 text-sm border rounded-md hover:bg-gray-100"
+            className="px-4 py-2 text-sm border border-[#2e3044] text-[#8b8da0] rounded-md hover:bg-[#272833] transition-colors"
           >
             Cancel
           </button>
@@ -111,11 +111,13 @@ export default function UrlForm({ onSuccess, onCancel }: Props) {
           disabled={loading}
           className="
             px-4 py-2 text-sm
-            bg-blue-600 text-white
+            bg-[#5c6bc0] text-[#eaebf2]
+            font-semibold
             rounded-md
-            hover:bg-blue-700
+            hover:bg-[#6a79ce]
             active:scale-95
             disabled:opacity-60
+            transition
           "
         >
           {loading ? "Creating..." : "Create"}

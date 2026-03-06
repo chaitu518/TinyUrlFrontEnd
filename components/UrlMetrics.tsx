@@ -37,9 +37,9 @@ function MetricCard({
   value: number;
 }) {
   return (
-    <div className="bg-white border rounded p-4 text-center">
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="text-2xl font-bold">{value}</p>
+    <div className="bg-[#1e1f27] border border-[#2e3044] rounded-lg p-4 text-center shadow">
+      <p className="text-sm text-[#8b8da0]">{label}</p>
+      <p className="text-2xl font-bold text-[#d1d3de]">{value}</p>
     </div>
   );
 }
